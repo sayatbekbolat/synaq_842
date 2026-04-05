@@ -9,20 +9,20 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#f5facf",        // Light cream
-        surface: "#ffffff",           // White for cards
-        "surface-elevated": "#e8f0b8", // Slightly darker cream
-        foreground: "#1a1a1a",        // Dark text
-        "foreground-muted": "#6b7280", // Muted dark text
+        background: "#ffffff",        // Pure white - maximum readability
+        surface: "#f8f9fa",           // Very light gray for cards
+        "surface-elevated": "#e9ecef", // Light gray for elevation
+        foreground: "#212529",        // Dark gray text (high contrast)
+        "foreground-muted": "#6c757d", // Medium gray for secondary text
         lime: {
-          DEFAULT: "#c3fc9f",         // Light mint green
-          glow: "#d4ffb8",           // Lighter mint
-          dark: "#a8e87d",           // Darker mint
+          DEFAULT: "#4CAF50",         // Material Green (readable, friendly)
+          glow: "#66BB6A",           // Lighter green
+          dark: "#388E3C",           // Darker green
         },
-        accent: "#81d4fa",           // Soft sky blue
-        danger: "#ff9999",           // Soft coral red
-        success: "#90ee90",          // Light green
-        warning: "#ffe082",          // Soft yellow
+        accent: "#2196F3",           // Material Blue (clear, readable)
+        danger: "#f44336",           // Material Red (clear warning)
+        success: "#4CAF50",          // Same as lime for consistency
+        warning: "#FF9800",          // Material Orange (visible warning)
       },
       fontFamily: {
         sans: ["var(--font-geist-sans)", "sans-serif"],
@@ -37,11 +37,11 @@ const config: Config = {
         "pulse-glow": {
           "0%, 100%": {
             opacity: "1",
-            boxShadow: "0 0 20px rgba(195, 252, 159, 0.4)",
+            boxShadow: "0 0 20px rgba(76, 175, 80, 0.3)",
           },
           "50%": {
             opacity: "0.8",
-            boxShadow: "0 0 40px rgba(195, 252, 159, 0.7)",
+            boxShadow: "0 0 40px rgba(76, 175, 80, 0.5)",
           },
         },
         "slide-up": {
