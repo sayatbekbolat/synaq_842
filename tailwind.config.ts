@@ -9,15 +9,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#0a0a0a",
-        surface: "#1a1a1a",
-        "surface-elevated": "#252525",
-        foreground: "#ededed",
-        "foreground-muted": "#9ca3af",
+        background: "#f5facf",        // Light cream
+        surface: "#ffffff",           // White for cards
+        "surface-elevated": "#e8f0b8", // Slightly darker cream
+        foreground: "#1a1a1a",        // Dark text
+        "foreground-muted": "#6b7280", // Muted dark text
         lime: {
-          DEFAULT: "#c6ff00",
-          glow: "#d4ff33",
-          dark: "#9acc00",
+          DEFAULT: "#c3fc9f",         // Light mint green
+          glow: "#d4ffb8",           // Lighter mint
+          dark: "#a8e87d",           // Darker mint
         },
         accent: "#0ea5e9",
         danger: "#ef4444",
@@ -36,11 +36,11 @@ const config: Config = {
         "pulse-glow": {
           "0%, 100%": {
             opacity: "1",
-            boxShadow: "0 0 20px rgba(198, 255, 0, 0.3)",
+            boxShadow: "0 0 20px rgba(195, 252, 159, 0.4)",
           },
           "50%": {
             opacity: "0.8",
-            boxShadow: "0 0 40px rgba(198, 255, 0, 0.6)",
+            boxShadow: "0 0 40px rgba(195, 252, 159, 0.7)",
           },
         },
         "slide-up": {

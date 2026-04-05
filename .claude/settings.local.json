@@ -29,7 +29,11 @@
       "Bash(killall ngrok:*)",
       "Bash(python3 -c \" import sys, json data = json.load\\(sys.stdin\\) if data.get\\('tunnels'\\) and len\\(data['tunnels']\\) > 0: url = data['tunnels'][0]['public_url'] domain = url.replace\\('https://', ''\\).replace\\('http://', ''\\) print\\('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'\\) print\\('🎉 ngrok is LIVE!'\\) print\\('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'\\) print\\(\\) print\\(f'📱 Public URL: {url}'\\) print\\(f'🤖 Domain: {domain}'\\) print\\(\\) print\\('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'\\) else: print\\('No tunnels found'\\) \")",
       "Bash(curl -s https://postcostal-stephani-corporally.ngrok-free.dev)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(curl -s \"https://api.telegram.org/bot8603998352:AAES-2zf-uOOUyZ8aXvP2MoxfbpnbBLyj-A/getMe\")",
+      "Bash(python3 -c \"import sys, json; data = json.load\\(sys.stdin\\); print\\(f\\\\\"Bot Username: @{data['result']['username']}\\\\\"\\) if data.get\\('ok'\\) else print\\('Error:', data\\)\")",
+      "Bash(git push:*)"
     ]
   }
 }
