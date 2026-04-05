@@ -159,6 +159,12 @@ CREATE POLICY "Users can insert their own data"
   ON users FOR INSERT
   WITH CHECK (true);
 
+-- Allow users to update their own data
+CREATE POLICY "Users can update their own data"
+  ON users FOR UPDATE
+  USING (true)
+  WITH CHECK (true);
+
 -- Allow public read access to completed attempts
 CREATE POLICY "Completed attempts are viewable by everyone"
   ON attempts FOR SELECT
