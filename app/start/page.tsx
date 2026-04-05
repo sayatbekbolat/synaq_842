@@ -86,7 +86,8 @@ export default function StartPage() {
           user_id: userId,
           start_time: new Date().toISOString(),
           status: "started",
-          start_location: `POINT(${locationCheck.location?.longitude} ${locationCheck.location?.latitude})`,
+          start_lat: locationCheck.location?.latitude,
+          start_lng: locationCheck.location?.longitude,
         })
         .select()
         .single();
