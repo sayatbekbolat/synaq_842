@@ -73,21 +73,49 @@ export default function AuthPage() {
       }
 
       // Create or update user in Supabase
-      const { data: userData, error: upsertError } = await supabase
+      // First check if user exists
+      const { data: existingUser } = await supabase
         .from("users")
-        .upsert({
-          id: `telegram-${user.id}`,
-          telegram_id: user.id,
-          telegram_username: user.username || "",
-          display_name: `${user.first_name}${user.last_name ? ' ' + user.last_name : ''}`,
-          created_at: new Date().toISOString(),
-        })
         .select()
+        .eq("telegram_id", user.id)
         .single();
 
-      if (upsertError) {
-        console.error("Failed to save user:", upsertError);
-        throw new Error("Failed to save user data");
+      let userData;
+
+      if (existingUser) {
+        // Update existing user
+        const { data, error: updateError } = await supabase
+          .from("users")
+          .update({
+            telegram_username: user.username || "",
+            display_name: `${user.first_name}${user.last_name ? ' ' + user.last_name : ''}`,
+          })
+          .eq("telegram_id", user.id)
+          .select()
+          .single();
+
+        if (updateError) {
+          console.error("Failed to update user:", updateError);
+          throw new Error("Failed to save user data");
+        }
+        userData = data;
+      } else {
+        // Create new user
+        const { data, error: insertError } = await supabase
+          .from("users")
+          .insert({
+            telegram_id: user.id,
+            telegram_username: user.username || "",
+            display_name: `${user.first_name}${user.last_name ? ' ' + user.last_name : ''}`,
+          })
+          .select()
+          .single();
+
+        if (insertError) {
+          console.error("Failed to create user:", insertError);
+          throw new Error("Failed to save user data");
+        }
+        userData = data;
       }
 
       // Save to localStorage
