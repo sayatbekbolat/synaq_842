@@ -1,7 +1,35 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx:*)"
+      "Bash(npx:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(lsof:*)",
+      "Bash(curl -I http://localhost:3000)",
+      "Bash(curl http://localhost:3000)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(npm uninstall:*)",
+      "Bash(ls -la /Users/bekbolatsayat/Documents/synaq/.env*)",
+      "Bash(npm list:*)",
+      "Bash(open:*)",
+      "Bash(curl -s http://localhost:3000/start)",
+      "Read(//tmp/**)",
+      "Bash(pbcopy)",
+      "Bash(ipconfig getifaddr:*)",
+      "Bash(brew install:*)",
+      "Bash(ngrok http:*)",
+      "Bash(pkill ngrok:*)",
+      "Bash(python3 -c \"import sys, json; data = json.load\\(sys.stdin\\); print\\(data['tunnels'][0]['public_url'] if data.get\\('tunnels'\\) else 'No URL yet'\\)\")",
+      "Bash(curl -s http://localhost:4040/api/tunnels)",
+      "Bash(python3 -c ':*)",
+      "Bash(ngrok version:*)",
+      "Bash(curl -s http://localhost:4041/api/tunnels)",
+      "Bash(ngrok config:*)",
+      "Bash(python3 -m json.tool)",
+      "Bash(killall ngrok:*)",
+      "Bash(python3 -c \" import sys, json data = json.load\\(sys.stdin\\) if data.get\\('tunnels'\\) and len\\(data['tunnels']\\) > 0: url = data['tunnels'][0]['public_url'] domain = url.replace\\('https://', ''\\).replace\\('http://', ''\\) print\\('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'\\) print\\('🎉 ngrok is LIVE!'\\) print\\('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'\\) print\\(\\) print\\(f'📱 Public URL: {url}'\\) print\\(f'🤖 Domain: {domain}'\\) print\\(\\) print\\('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'\\) else: print\\('No tunnels found'\\) \")",
+      "Bash(curl -s https://postcostal-stephani-corporally.ngrok-free.dev)",
+      "Bash(git add:*)"
     ]
   }
 }
