@@ -217,9 +217,9 @@ export default function AuthPage() {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="mb-6 bg-red-500/10 border border-red-500/20 rounded-lg p-4"
+              className="mb-6 bg-danger/10 border border-danger/30 rounded-lg p-4"
             >
-              <p className="text-red-400 text-sm">{error}</p>
+              <p className="text-danger text-sm">{error}</p>
             </motion.div>
           )}
 
@@ -254,8 +254,8 @@ export default function AuthPage() {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.3 }}
                   onClick={handleSkipAuth}
-                  className="mt-4 w-full bg-yellow-500/10 border border-yellow-500/30 text-yellow-400
-                             text-sm py-3 rounded-lg hover:bg-yellow-500/20 transition-colors"
+                  className="mt-4 w-full bg-warning/20 border border-warning/40 text-foreground
+                             text-sm py-3 rounded-lg hover:bg-warning/30 transition-colors"
                   type="button"
                 >
                   🧪 DEV: Skip Authentication (use mock user)

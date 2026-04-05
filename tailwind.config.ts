@@ -19,9 +19,10 @@ const config: Config = {
           glow: "#d4ffb8",           // Lighter mint
           dark: "#a8e87d",           // Darker mint
         },
-        accent: "#0ea5e9",
-        danger: "#ef4444",
-        success: "#10b981",
+        accent: "#81d4fa",           // Soft sky blue
+        danger: "#ff9999",           // Soft coral red
+        success: "#90ee90",          // Light green
+        warning: "#ffe082",          // Soft yellow
       },
       fontFamily: {
         sans: ["var(--font-geist-sans)", "sans-serif"],

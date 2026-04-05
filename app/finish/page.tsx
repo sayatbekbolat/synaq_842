@@ -245,9 +245,9 @@ export default function FinishPage() {
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="mb-6 bg-red-500/10 border border-red-500/20 rounded-lg p-4"
+                className="mb-6 bg-danger/10 border border-danger/30 rounded-lg p-4"
               >
-                <p className="text-red-400 text-sm">{error}</p>
+                <p className="text-danger text-sm">{error}</p>
               </motion.div>
             )}
 
@@ -299,9 +299,9 @@ export default function FinishPage() {
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="mb-6 bg-red-500/10 border border-red-500/20 rounded-lg p-4"
+                className="mb-6 bg-danger/10 border border-danger/30 rounded-lg p-4"
               >
-                <p className="text-red-400 text-sm">{error}</p>
+                <p className="text-danger text-sm">{error}</p>
               </motion.div>
             )}
 
@@ -313,7 +313,7 @@ export default function FinishPage() {
                   htmlFor="name"
                   className="block text-foreground text-sm font-semibold mb-2"
                 >
-                  Your Name <span className="text-red-400">*</span>
+                  Your Name <span className="text-danger">*</span>
                 </label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground-muted" />

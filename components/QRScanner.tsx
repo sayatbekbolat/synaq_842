@@ -169,20 +169,20 @@ export default function QRScanner({
 
           {/* Error Message */}
           {error && (
-            <div className="mt-4 bg-red-500/10 border border-red-500/20 rounded-lg p-4">
-              <p className="text-red-400 text-sm text-center mb-2">{error}</p>
+            <div className="mt-4 bg-danger/10 border border-danger/30 rounded-lg p-4">
+              <p className="text-danger text-sm text-center mb-2">{error}</p>
               {error.includes("Permission") && (
-                <p className="text-red-300 text-xs text-center">
+                <p className="text-danger/80 text-xs text-center">
                   Please allow camera access in your browser settings
                 </p>
               )}
               {error.includes("No cameras") && (
-                <p className="text-red-300 text-xs text-center">
+                <p className="text-danger/80 text-xs text-center">
                   Make sure your device has a working camera
                 </p>
               )}
               {error.includes("NotReadableError") && (
-                <p className="text-red-300 text-xs text-center">
+                <p className="text-danger/80 text-xs text-center">
                   Camera might be in use by another app. Close other apps and try again.
                 </p>
               )}
@@ -226,8 +226,8 @@ export default function QRScanner({
                 onScan(expectedCode || "SYNAQ_START");
               }, 100);
             }}
-            className="w-full bg-yellow-500/10 border border-yellow-500/30 text-yellow-400
-                       text-xs py-2 rounded-lg hover:bg-yellow-500/20 transition-colors"
+            className="w-full bg-warning/20 border border-warning/40 text-foreground
+                       text-xs py-2 rounded-lg hover:bg-warning/30 transition-colors"
             type="button"
           >
             🧪 DEV: Skip QR Scan (simulate success)
