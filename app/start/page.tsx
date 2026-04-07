@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 
 export const dynamic = "force-dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
-import { QrCode, MapPin, ChevronLeft, Zap } from "lucide-react";
+import { QrCode, MapPin, ChevronLeft, Zap, Loader2 } from "lucide-react";
 import QRScanner from "@/components/QRScanner";
 import { saveActiveAttempt } from "@/lib/timer";
 import { supabase } from "@/lib/supabase";
@@ -21,7 +21,7 @@ async function verifyStartLocation() {
   return module.verifyStartLocation();
 }
 
-export default function StartPage() {
+function StartPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [showScanner, setShowScanner] = useState(false);
@@ -340,5 +340,17 @@ export default function StartPage() {
         </>
       )}
     </div>
+  );
+}
+
+export default function StartPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-lime animate-spin" />
+      </div>
+    }>
+      <StartPageContent />
+    </Suspense>
   );
 }
