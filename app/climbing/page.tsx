@@ -11,8 +11,10 @@ import {
   calculateElapsedTime,
   formatTime,
 } from "@/lib/timer";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function ClimbingPage() {
+  const { t } = useLanguage();
   const router = useRouter();
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [hasActiveAttempt, setHasActiveAttempt] = useState(false);
@@ -52,7 +54,7 @@ export default function ClimbingPage() {
   if (!hasActiveAttempt) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-pulse text-foreground-muted">Loading...</div>
+        <div className="animate-pulse text-foreground-muted">{t('loading')}</div>
       </div>
     );
   }
@@ -102,11 +104,11 @@ export default function ClimbingPage() {
             <div className="flex items-center justify-center gap-2 mb-2">
               <div className="w-2 h-2 bg-lime rounded-full animate-pulse" />
               <p className="text-lime text-sm font-semibold tracking-wide uppercase">
-                Climbing in progress
+                {t('climbingInProgress')}
               </p>
             </div>
             <h1 className="text-3xl font-bold text-foreground">
-              Keep going! 🏔️
+              {t('keepGoingTitle')}
             </h1>
           </div>
 
@@ -119,13 +121,13 @@ export default function ClimbingPage() {
             <div className="bg-surface border-2 border-lime rounded-2xl p-8 glow-lime">
               <div className="flex items-center justify-center gap-2 mb-2">
                 <Timer className="w-5 h-5 text-lime" />
-                <p className="text-foreground-muted text-sm">Time</p>
+                <p className="text-foreground-muted text-sm">{t('yourTime')}</p>
               </div>
               <div className="text-6xl font-mono font-bold text-lime tabular-nums">
                 {formatTime(elapsedSeconds)}
               </div>
               <p className="text-foreground-muted text-xs mt-2">
-                {Math.floor(elapsedSeconds / 60)} minutes elapsed
+                {Math.floor(elapsedSeconds / 60)} {t('minutesElapsed')}
               </p>
             </div>
           </motion.div>
@@ -139,12 +141,12 @@ export default function ClimbingPage() {
           >
             <p className="text-foreground text-sm">
               {elapsedSeconds < 120
-                ? "Great start! Find your rhythm 💪"
+                ? t('motivational1')
                 : elapsedSeconds < 240
-                  ? "You're doing amazing! Keep it up 🔥"
+                  ? t('motivational2')
                   : elapsedSeconds < 360
-                    ? "Almost there! Push through 🚀"
-                    : "Incredible endurance! Finish strong 🏆"}
+                    ? t('motivational3')
+                    : t('motivational4')}
             </p>
           </motion.div>
 
@@ -158,7 +160,7 @@ export default function ClimbingPage() {
             type="button"
           >
             <Zap className="w-6 h-6" />
-            Scan Finish QR
+            {t('scanFinishQr')}
           </button>
 
           {/* Safety Note */}
@@ -170,8 +172,7 @@ export default function ClimbingPage() {
           >
             <AlertCircle className="w-4 h-4 text-foreground-muted mt-0.5 flex-shrink-0" />
             <p className="text-foreground-muted text-xs">
-              Timer continues running until you scan the finish QR code. Take
-              your time and climb safely!
+              {t('timerNote')}
             </p>
           </motion.div>
         </motion.div>

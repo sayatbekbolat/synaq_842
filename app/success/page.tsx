@@ -4,8 +4,10 @@ import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { Trophy, Home, Share2, AtSign } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 function SuccessContent() {
+  const { t } = useLanguage();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [time, setTime] = useState(0);
@@ -45,7 +47,7 @@ function SuccessContent() {
     } else {
       // Fallback: copy to clipboard
       navigator.clipboard.writeText(shareText);
-      alert("Copied to clipboard!");
+      alert(t('copiedToClipboard'));
     }
   };
 
@@ -117,17 +119,14 @@ function SuccessContent() {
             className="mb-8"
           >
             <h1 className="text-4xl font-bold text-foreground mb-3">
-              Congratulations! 🎉
+              {t('congratulations')}
             </h1>
             <p className="text-foreground-muted text-lg mb-2">
-              {name}, you completed the climb in
+              {t('completedClimbIn', { name })}
             </p>
             <div className="text-6xl font-mono font-bold text-lime mb-2">
               {formatTime(time)}
             </div>
-            <p className="text-foreground-muted text-sm">
-              That's {Math.floor(time / 60)} minutes and {time % 60} seconds
-            </p>
           </motion.div>
 
           {/* Stats Card */}
@@ -138,14 +137,13 @@ function SuccessContent() {
             className="bg-surface border border-lime/20 rounded-2xl p-6 mb-8"
           >
             <p className="text-foreground-muted text-sm mb-4">
-              Your climb has been recorded! Check the leaderboard to see how you
-              rank.
+              {t('climbRecorded')}
             </p>
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-background rounded-lg p-3">
                 <div className="text-lime font-bold text-2xl font-mono">✓</div>
                 <div className="text-foreground-muted text-xs mt-1">
-                  Completed
+                  {t('completed')}
                 </div>
               </div>
               <div className="bg-background rounded-lg p-3">
@@ -153,7 +151,7 @@ function SuccessContent() {
                   {formatTime(time)}
                 </div>
                 <div className="text-foreground-muted text-xs mt-1">
-                  Your Time
+                  {t('yourTime')}
                 </div>
               </div>
             </div>
@@ -176,7 +174,7 @@ function SuccessContent() {
               type="button"
             >
               <Share2 className="w-5 h-5" />
-              Share Your Achievement
+              {t('shareYourAchievement')}
             </button>
 
             {/* Home Button */}
@@ -188,7 +186,7 @@ function SuccessContent() {
               type="button"
             >
               <Home className="w-5 h-5" />
-              Back to Home
+              {t('backToHome')}
             </button>
           </motion.div>
 
@@ -200,7 +198,7 @@ function SuccessContent() {
             className="mt-8 flex items-center justify-center gap-2 text-foreground-muted text-sm"
           >
             <AtSign className="w-4 h-4" />
-            <p>Tag us on Instagram for a feature!</p>
+            <p>{t('tagUsOnInstagram')}</p>
           </motion.div>
         </motion.div>
       </main>
@@ -208,15 +206,18 @@ function SuccessContent() {
   );
 }
 
+function SuccessPageLoader() {
+  const { t } = useLanguage();
+  return (
+    <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="animate-pulse text-foreground-muted">{t('loading')}</div>
+    </div>
+  );
+}
+
 export default function SuccessPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen bg-background flex items-center justify-center">
-          <div className="animate-pulse text-foreground-muted">Loading...</div>
-        </div>
-      }
-    >
+    <Suspense fallback={<SuccessPageLoader />}>
       <SuccessContent />
     </Suspense>
   );

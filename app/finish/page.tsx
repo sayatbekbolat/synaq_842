@@ -15,6 +15,7 @@ import {
 import QRScanner from "@/components/QRScanner";
 import { getActiveAttempt, clearActiveAttempt } from "@/lib/timer";
 import { supabase } from "@/lib/supabase";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // Use dev geofence in development to skip location checks
 const isDev = process.env.NODE_ENV === 'development';
@@ -28,6 +29,7 @@ async function verifyFinishLocation() {
 }
 
 export default function FinishPage() {
+  const { t } = useLanguage();
   const router = useRouter();
   const [step, setStep] = useState<"scan" | "details" | "submitting">("scan");
   const [showScanner, setShowScanner] = useState(false);
@@ -61,7 +63,7 @@ export default function FinishPage() {
 
     // Validate QR code
     if (qrData !== "SYNAQ_FINISH") {
-      setError("Invalid QR code. Please scan the FINISH code.");
+      setError(t('invalidFinishQr'));
       setShowScanner(false);
       return;
     }
@@ -72,8 +74,7 @@ export default function FinishPage() {
 
       if (!locationCheck.isValid) {
         setError(
-          locationCheck.error ||
-            `You're too far from the finish (${Math.round(locationCheck.distance || 0)}m away)`
+          locationCheck.error || t('tooFarFromFinish')
         );
         setShowScanner(false);
         return;
@@ -82,7 +83,7 @@ export default function FinishPage() {
       // Get active attempt
       const attempt = getActiveAttempt();
       if (!attempt) {
-        setError("No active climb found. Please start a new climb.");
+        setError(t('noActiveClimb'));
         setShowScanner(false);
         return;
       }
@@ -97,14 +98,14 @@ export default function FinishPage() {
       setStep("details");
     } catch (err) {
       console.error("Error finishing climb:", err);
-      setError("Something went wrong. Please try again.");
+      setError(t('somethingWentWrong'));
       setShowScanner(false);
     }
   };
 
   const handleSubmit = async () => {
     if (!displayName.trim()) {
-      setError("Please enter your name");
+      setError(t('pleaseEnterName'));
       return;
     }
 
@@ -201,7 +202,7 @@ export default function FinishPage() {
       router.push(`/success?time=${finishTime}&name=${encodeURIComponent(finalName)}`);
     } catch (err) {
       console.error("Error submitting climb:", err);
-      setError("Failed to submit climb. Please try again.");
+      setError(t('failedToStartClimb'));
       setStep("details");
     }
   };
@@ -234,10 +235,10 @@ export default function FinishPage() {
 
             {/* Title */}
             <h2 className="text-2xl font-bold text-foreground mb-2">
-              Almost there! 🎉
+              {t('almostThere')}
             </h2>
             <p className="text-foreground-muted mb-8">
-              Scan the QR code at the finish to complete your climb.
+              {t('scanFinishToComplete')}
             </p>
 
             {/* Error Message */}
@@ -261,7 +262,7 @@ export default function FinishPage() {
               type="button"
             >
               <QrCode className="w-6 h-6" />
-              Scan Finish QR
+              {t('scanFinishQr')}
             </button>
           </motion.div>
         )}
@@ -284,10 +285,10 @@ export default function FinishPage() {
 
             {/* Title */}
             <h2 className="text-2xl font-bold text-foreground mb-2">
-              Great job! 💪
+              {t('greatJob')}
             </h2>
             <p className="text-foreground-muted mb-2">
-              You completed the climb in
+              {t('youCompletedIn')}
             </p>
             <div className="text-5xl font-mono font-bold text-lime mb-8">
               {Math.floor((finishTime || 0) / 60)}:
@@ -313,7 +314,7 @@ export default function FinishPage() {
                   htmlFor="name"
                   className="block text-foreground text-sm font-semibold mb-2"
                 >
-                  Your Name <span className="text-danger">*</span>
+                  {t('yourName')} <span className="text-danger">{t('required')}</span>
                 </label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground-muted" />
@@ -322,7 +323,7 @@ export default function FinishPage() {
                     type="text"
                     value={displayName}
                     onChange={(e) => setDisplayName(e.target.value)}
-                    placeholder="Enter your name"
+                    placeholder={t('enterYourName')}
                     className="w-full bg-surface border border-foreground-muted/20 rounded-lg py-3 pl-11 pr-4
                                text-foreground placeholder:text-foreground-muted/50
                                focus:outline-none focus:border-lime focus:ring-1 focus:ring-lime
@@ -338,9 +339,9 @@ export default function FinishPage() {
                   htmlFor="instagram"
                   className="block text-foreground text-sm font-semibold mb-2"
                 >
-                  Instagram Handle{" "}
+                  {t('instagramHandle')}{" "}
                   <span className="text-foreground-muted font-normal">
-                    (optional)
+                    {t('instagramOptional')}
                   </span>
                 </label>
                 <div className="relative">
@@ -358,7 +359,7 @@ export default function FinishPage() {
                   />
                 </div>
                 <p className="text-foreground-muted text-xs mt-1">
-                  Share your Instagram to appear on the podium
+                  {t('shareInstagram')}
                 </p>
               </div>
             </div>
@@ -374,7 +375,7 @@ export default function FinishPage() {
                          flex items-center justify-center gap-3"
               type="button"
             >
-              Submit Time
+              {t('submitTime')}
               <ChevronRight className="w-6 h-6" />
             </button>
           </motion.div>
@@ -391,7 +392,7 @@ export default function FinishPage() {
                 <CheckCircle2 className="w-8 h-8 text-lime" />
               </div>
               <p className="text-foreground text-lg font-semibold">
-                Submitting your climb...
+                {t('submittingClimb')}
               </p>
             </div>
           </motion.div>
