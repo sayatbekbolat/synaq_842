@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { Send, Mountain, Loader2 } from "lucide-react";
 import TelegramLogin, { TelegramUser } from "@/components/TelegramLogin";
@@ -11,18 +11,20 @@ export const dynamic = "force-dynamic";
 
 export default function AuthPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const botUsername = process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || "";
+  const returnUrl = searchParams.get('return') || '/';
 
   // Check if already authenticated
   useEffect(() => {
     const userId = localStorage.getItem("synaq_user_id");
     if (userId) {
-      // Already logged in, redirect to home
-      router.push("/");
+      // Already logged in, redirect to return URL or home
+      router.push(returnUrl);
     }
-  }, [router]);
+  }, [router, returnUrl]);
 
   const handleTelegramAuth = async (user: TelegramUser) => {
     setIsLoading(true);
@@ -49,7 +51,7 @@ export default function AuthPage() {
 
         // Redirect to home after short delay
         setTimeout(() => {
-          router.push("/");
+          router.push(returnUrl);
         }, 1000);
 
         return;
@@ -124,7 +126,7 @@ export default function AuthPage() {
 
       // Redirect to home
       setTimeout(() => {
-        router.push("/");
+        router.push(returnUrl);
       }, 1000);
     } catch (err) {
       console.error("Auth error:", err);
@@ -147,7 +149,7 @@ export default function AuthPage() {
       localStorage.setItem("synaq_user_id", mockUser.id);
       localStorage.setItem("synaq_user_data", JSON.stringify(mockUser));
 
-      router.push("/");
+      router.push(returnUrl);
     }
   };
 

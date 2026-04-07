@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const dynamic = "force-dynamic";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
-import { QrCode, MapPin, ChevronLeft } from "lucide-react";
+import { QrCode, MapPin, ChevronLeft, Zap } from "lucide-react";
 import QRScanner from "@/components/QRScanner";
 import { saveActiveAttempt } from "@/lib/timer";
 import { supabase } from "@/lib/supabase";
@@ -23,9 +23,25 @@ async function verifyStartLocation() {
 
 export default function StartPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [showScanner, setShowScanner] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const action = searchParams.get('action');
+
+  // Check if user is logged in
+  useEffect(() => {
+    const userId = localStorage.getItem("synaq_user_id");
+
+    if (!userId) {
+      // Not logged in - redirect to auth with return URL
+      const currentUrl = `/start${action ? `?action=${action}` : ''}`;
+      router.push(`/auth?return=${encodeURIComponent(currentUrl)}`);
+    } else {
+      setIsLoggedIn(true);
+    }
+  }, [router, action]);
 
   const handleScanQR = () => {
     setShowScanner(true);
@@ -118,6 +134,79 @@ export default function StartPage() {
     }
   };
 
+  // Handle direct start confirmation (when QR was scanned externally)
+  const handleDirectStart = async () => {
+    setIsVerifying(true);
+    setError(null);
+
+    try {
+      // Step 1: Verify location
+      const locationCheck = await verifyStartLocation();
+
+      if (!locationCheck.isValid) {
+        setError(
+          locationCheck.error ||
+            `You're too far from the start (${Math.round(locationCheck.distance || 0)}m away)`
+        );
+        setIsVerifying(false);
+        return;
+      }
+
+      // Step 2: Get user ID
+      const userId = localStorage.getItem("synaq_user_id") || "temp-user-" + Date.now();
+      const attemptId = "attempt-" + Date.now();
+
+      // In dev mode, skip Supabase
+      if (process.env.NODE_ENV === 'development') {
+        saveActiveAttempt({
+          attemptId,
+          userId,
+          startTime: Date.now(),
+          status: "started",
+        });
+        router.push("/climbing");
+        return;
+      }
+
+      // Production: Save to Supabase
+      const { data: attempt, error: insertError } = await supabase
+        .from("attempts")
+        .insert({
+          user_id: userId,
+          start_time: new Date().toISOString(),
+          status: "started",
+          start_lat: locationCheck.location?.latitude,
+          start_lng: locationCheck.location?.longitude,
+        })
+        .select()
+        .single();
+
+      if (insertError) {
+        console.error("Failed to create attempt:", insertError);
+        setError("Failed to start climb. Please try again.");
+        setIsVerifying(false);
+        return;
+      }
+
+      saveActiveAttempt({
+        attemptId: attempt.id,
+        userId,
+        startTime: Date.now(),
+        status: "started",
+      });
+
+      router.push("/climbing");
+    } catch (err) {
+      console.error("Error starting climb:", err);
+      setError("Something went wrong. Please try again.");
+      setIsVerifying(false);
+    }
+  };
+
+  if (!isLoggedIn) {
+    return null; // Will redirect in useEffect
+  }
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Show scanner if active */}
@@ -154,16 +243,22 @@ export default function StartPage() {
             >
               {/* Icon */}
               <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-lime/10 border-2 border-lime flex items-center justify-center">
-                <QrCode className="w-12 h-12 text-lime" />
+                {action === 'confirm' ? (
+                  <Zap className="w-12 h-12 text-lime" />
+                ) : (
+                  <QrCode className="w-12 h-12 text-lime" />
+                )}
               </div>
 
               {/* Title */}
               <h2 className="text-2xl font-bold text-foreground mb-2">
-                Ready to climb?
+                {action === 'confirm' ? 'Ready to start?' : 'Ready to climb?'}
               </h2>
               <p className="text-foreground-muted mb-8">
-                Scan the QR code at the start of Health Stairs to begin your
-                climb.
+                {action === 'confirm'
+                  ? 'Tap the button below to start your climb timer.'
+                  : 'Scan the QR code at the start of Health Stairs to begin your climb.'
+                }
               </p>
 
               {/* Error Message */}
@@ -177,20 +272,36 @@ export default function StartPage() {
                 </motion.div>
               )}
 
-              {/* Scan Button */}
-              <button
-                onClick={handleScanQR}
-                disabled={isVerifying}
-                className="w-full bg-lime text-background font-bold text-lg py-5 rounded-xl
-                           glow-lime border-sharp border-lime-glow
-                           disabled:opacity-50 disabled:cursor-not-allowed
-                           active:scale-[0.98] transition-all duration-150
-                           flex items-center justify-center gap-3"
-                type="button"
-              >
-                <QrCode className="w-6 h-6" />
-                {isVerifying ? "Verifying..." : "Scan QR Code"}
-              </button>
+              {/* Action Button */}
+              {action === 'confirm' ? (
+                <button
+                  onClick={handleDirectStart}
+                  disabled={isVerifying}
+                  className="w-full bg-lime text-background font-bold text-xl py-6 rounded-xl
+                             glow-lime border-sharp border-lime-glow
+                             disabled:opacity-50 disabled:cursor-not-allowed
+                             active:scale-[0.98] transition-all duration-150
+                             flex items-center justify-center gap-3"
+                  type="button"
+                >
+                  <Zap className="w-7 h-7" />
+                  {isVerifying ? "Starting..." : "Start Climb"}
+                </button>
+              ) : (
+                <button
+                  onClick={handleScanQR}
+                  disabled={isVerifying}
+                  className="w-full bg-lime text-background font-bold text-lg py-5 rounded-xl
+                             glow-lime border-sharp border-lime-glow
+                             disabled:opacity-50 disabled:cursor-not-allowed
+                             active:scale-[0.98] transition-all duration-150
+                             flex items-center justify-center gap-3"
+                  type="button"
+                >
+                  <QrCode className="w-6 h-6" />
+                  {isVerifying ? "Verifying..." : "Scan QR Code"}
+                </button>
+              )}
 
               {/* Info Cards */}
               <div className="mt-8 space-y-3">

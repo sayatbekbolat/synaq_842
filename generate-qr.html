@@ -99,7 +99,7 @@
 
         <div class="qr-section">
             <h2>START QR Code</h2>
-            <div class="code-value">SYNAQ_START</div>
+            <div class="code-value">https://synaq-842.vercel.app/start?action=confirm</div>
             <div id="qrcode-start" class="qr-code"></div>
             <p style="color: #9ca3af; font-size: 14px;">Place at the BOTTOM of the stairs</p>
             <button onclick="downloadQR('qrcode-start', 'synaq-start-qr.png')">Download PNG</button>
@@ -107,7 +107,7 @@
 
         <div class="qr-section">
             <h2>FINISH QR Code</h2>
-            <div class="code-value">SYNAQ_FINISH</div>
+            <div class="code-value">https://synaq-842.vercel.app/finish?action=confirm</div>
             <div id="qrcode-finish" class="qr-code"></div>
             <p style="color: #9ca3af; font-size: 14px;">Place at the TOP of the stairs</p>
             <button onclick="downloadQR('qrcode-finish', 'synaq-finish-qr.png')">Download PNG</button>
@@ -149,7 +149,7 @@ localStorage.setItem('synaq_active_attempt', JSON.stringify({<br>
     <script>
         // Generate START QR Code
         new QRCode(document.getElementById("qrcode-start"), {
-            text: "SYNAQ_START",
+            text: "https://synaq-842.vercel.app/start?action=confirm",
             width: 256,
             height: 256,
             colorDark: "#000000",
@@ -159,7 +159,7 @@ localStorage.setItem('synaq_active_attempt', JSON.stringify({<br>
 
         // Generate FINISH QR Code
         new QRCode(document.getElementById("qrcode-finish"), {
-            text: "SYNAQ_FINISH",
+            text: "https://synaq-842.vercel.app/finish?action=confirm",
             width: 256,
             height: 256,
             colorDark: "#000000",
