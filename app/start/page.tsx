@@ -9,6 +9,7 @@ import { QrCode, MapPin, ChevronLeft, Zap, Loader2 } from "lucide-react";
 import QRScanner from "@/components/QRScanner";
 import { saveActiveAttempt } from "@/lib/timer";
 import { supabase } from "@/lib/supabase";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // Use dev geofence in development to skip location checks
 const isDev = process.env.NODE_ENV === 'development';
@@ -22,6 +23,7 @@ async function verifyStartLocation() {
 }
 
 function StartPageContent() {
+  const { t } = useLanguage();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [showScanner, setShowScanner] = useState(false);
@@ -53,7 +55,7 @@ function StartPageContent() {
 
     // Validate QR code (should be "START" or specific code)
     if (qrData !== "SYNAQ_START") {
-      setError("Invalid QR code. Please scan the START code.");
+      setError(t('invalidStartQr'));
       setShowScanner(false);
       return;
     }
@@ -67,7 +69,7 @@ function StartPageContent() {
       if (!locationCheck.isValid) {
         setError(
           locationCheck.error ||
-            `You're too far from the start (${Math.round(locationCheck.distance || 0)}m away)`
+            t('tooFarFromStartWithDistance', { distance: Math.round(locationCheck.distance || 0).toString() })
         );
         setShowScanner(false);
         setIsVerifying(false);
@@ -110,7 +112,7 @@ function StartPageContent() {
 
       if (insertError) {
         console.error("Failed to create attempt:", insertError);
-        setError("Failed to start climb. Please try again.");
+        setError(t('failedToStartClimb'));
         setShowScanner(false);
         setIsVerifying(false);
         return;
@@ -128,7 +130,7 @@ function StartPageContent() {
       router.push("/climbing");
     } catch (err) {
       console.error("Error starting climb:", err);
-      setError("Something went wrong. Please try again.");
+      setError(t('somethingWentWrong'));
       setShowScanner(false);
       setIsVerifying(false);
     }
@@ -146,7 +148,7 @@ function StartPageContent() {
       if (!locationCheck.isValid) {
         setError(
           locationCheck.error ||
-            `You're too far from the start (${Math.round(locationCheck.distance || 0)}m away)`
+            t('tooFarFromStartWithDistance', { distance: Math.round(locationCheck.distance || 0).toString() })
         );
         setIsVerifying(false);
         return;
@@ -183,7 +185,7 @@ function StartPageContent() {
 
       if (insertError) {
         console.error("Failed to create attempt:", insertError);
-        setError("Failed to start climb. Please try again.");
+        setError(t('failedToStartClimb'));
         setIsVerifying(false);
         return;
       }
@@ -198,7 +200,7 @@ function StartPageContent() {
       router.push("/climbing");
     } catch (err) {
       console.error("Error starting climb:", err);
-      setError("Something went wrong. Please try again.");
+      setError(t('somethingWentWrong'));
       setIsVerifying(false);
     }
   };
@@ -231,7 +233,7 @@ function StartPageContent() {
             >
               <ChevronLeft className="w-6 h-6 text-foreground-muted" />
             </button>
-            <h1 className="text-xl font-bold text-foreground">Start Synaq</h1>
+            <h1 className="text-xl font-bold text-foreground">{t('startSynaq')}</h1>
           </div>
 
           {/* Content */}
@@ -252,13 +254,10 @@ function StartPageContent() {
 
               {/* Title */}
               <h2 className="text-2xl font-bold text-foreground mb-2">
-                {action === 'confirm' ? 'Ready to start?' : 'Ready to climb?'}
+                {action === 'confirm' ? t('readyToStart') : t('readyToClimb')}
               </h2>
               <p className="text-foreground-muted mb-8">
-                {action === 'confirm'
-                  ? 'Tap the button below to start your climb timer.'
-                  : 'Scan the QR code at the start of Health Stairs to begin your climb.'
-                }
+                {action === 'confirm' ? t('tapToStart') : t('scanStartQr')}
               </p>
 
               {/* Error Message */}
@@ -285,7 +284,7 @@ function StartPageContent() {
                   type="button"
                 >
                   <Zap className="w-7 h-7" />
-                  {isVerifying ? "Starting..." : "Start Climb"}
+                  {isVerifying ? t('starting') : t('startClimb')}
                 </button>
               ) : (
                 <button
@@ -299,7 +298,7 @@ function StartPageContent() {
                   type="button"
                 >
                   <QrCode className="w-6 h-6" />
-                  {isVerifying ? "Verifying..." : "Scan QR Code"}
+                  {isVerifying ? t('verifying') : t('scanQrCode')}
                 </button>
               )}
 
@@ -310,11 +309,10 @@ function StartPageContent() {
                     <MapPin className="w-5 h-5 text-lime mt-0.5" />
                     <div>
                       <h3 className="text-foreground font-semibold text-sm mb-1">
-                        Location Required
+                        {t('locationRequired')}
                       </h3>
                       <p className="text-foreground-muted text-xs">
-                        You must be within 50m of the start point to begin your
-                        climb.
+                        {t('locationRequiredDesc')}
                       </p>
                     </div>
                   </div>
@@ -325,11 +323,10 @@ function StartPageContent() {
                     <QrCode className="w-5 h-5 text-lime mt-0.5" />
                     <div>
                       <h3 className="text-foreground font-semibold text-sm mb-1">
-                        QR Code Location
+                        {t('qrCodeLocation')}
                       </h3>
                       <p className="text-foreground-muted text-xs">
-                        Find the QR code at the bottom of the stairs near the
-                        entrance.
+                        {t('qrCodeLocationDesc')}
                       </p>
                     </div>
                   </div>

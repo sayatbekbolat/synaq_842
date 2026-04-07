@@ -6,10 +6,12 @@ import { motion } from "framer-motion";
 import { Send, Mountain, Loader2 } from "lucide-react";
 import TelegramLogin, { TelegramUser } from "@/components/TelegramLogin";
 import { supabase } from "@/lib/supabase";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const dynamic = "force-dynamic";
 
 function AuthPageContent() {
+  const { t } = useLanguage();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
@@ -158,11 +160,10 @@ function AuthPageContent() {
       <div className="min-h-screen bg-background flex items-center justify-center px-6">
         <div className="text-center max-w-md">
           <h2 className="text-xl font-bold text-foreground mb-4">
-            Configuration Error
+            {t('configurationError')}
           </h2>
           <p className="text-foreground-muted text-sm">
-            Telegram bot is not configured. Please set
-            NEXT_PUBLIC_TELEGRAM_BOT_USERNAME in your environment variables.
+            {t('botNotConfigured')}
           </p>
         </div>
       </div>
@@ -208,10 +209,10 @@ function AuthPageContent() {
 
           {/* Title */}
           <h1 className="text-3xl font-bold text-foreground mb-2">
-            Welcome to <span className="text-lime">SYNAQ</span>
+            {t('welcomeTitle')}
           </h1>
           <p className="text-foreground-muted mb-8">
-            Login with Telegram to start tracking your climbs
+            {t('loginSubtitle')}
           </p>
 
           {/* Error Message */}
@@ -229,7 +230,7 @@ function AuthPageContent() {
           {isLoading ? (
             <div className="bg-surface rounded-2xl p-8 border border-lime/20">
               <Loader2 className="w-8 h-8 text-lime mx-auto mb-4 animate-spin" />
-              <p className="text-foreground-muted text-sm">Authenticating...</p>
+              <p className="text-foreground-muted text-sm">{t('authenticating')}</p>
             </div>
           ) : (
             <>
@@ -238,7 +239,7 @@ function AuthPageContent() {
                 <div className="flex items-center justify-center gap-2 mb-6">
                   <Send className="w-5 h-5 text-lime" />
                   <h2 className="text-lg font-semibold text-foreground">
-                    Login with Telegram
+                    {t('loginWithTelegram')}
                   </h2>
                 </div>
 
@@ -260,7 +261,7 @@ function AuthPageContent() {
                              text-sm py-3 rounded-lg hover:bg-warning/30 transition-colors"
                   type="button"
                 >
-                  🧪 DEV: Skip Authentication (use mock user)
+                  {t('devSkipAuth')}
                 </motion.button>
               )}
             </>
@@ -269,8 +270,7 @@ function AuthPageContent() {
           {/* Info */}
           <div className="mt-8 bg-surface/50 rounded-lg p-4">
             <p className="text-foreground-muted text-xs text-center">
-              We use Telegram to verify your identity and prevent cheating.
-              Your data is safe and only used for the leaderboard.
+              {t('securityNote')}
             </p>
           </div>
 
@@ -282,10 +282,10 @@ function AuthPageContent() {
               </div>
               <div>
                 <p className="text-foreground text-sm font-semibold">
-                  Track Your Progress
+                  {t('trackProgress')}
                 </p>
                 <p className="text-foreground-muted text-xs">
-                  Save all your climbs and see improvement over time
+                  {t('trackProgressDesc')}
                 </p>
               </div>
             </div>
@@ -296,10 +296,10 @@ function AuthPageContent() {
               </div>
               <div>
                 <p className="text-foreground text-sm font-semibold">
-                  Compete on Leaderboard
+                  {t('competeLeaderboard')}
                 </p>
                 <p className="text-foreground-muted text-xs">
-                  See how you rank against other climbers
+                  {t('competeLeaderboardDesc')}
                 </p>
               </div>
             </div>
@@ -310,10 +310,10 @@ function AuthPageContent() {
               </div>
               <div>
                 <p className="text-foreground text-sm font-semibold">
-                  Share on Social
+                  {t('shareOnSocial')}
                 </p>
                 <p className="text-foreground-muted text-xs">
-                  Show off your achievements to friends
+                  {t('shareOnSocialDesc')}
                 </p>
               </div>
             </div>

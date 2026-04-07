@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Trophy, Mountain } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Leader {
   rank: number;
@@ -33,6 +34,8 @@ const podiumColors = {
 };
 
 export default function Podium({ leaders }: PodiumProps) {
+  const { t } = useLanguage();
+
   // Ensure we have exactly 3 leaders, pad with empty if needed
   const paddedLeaders = [...leaders];
   while (paddedLeaders.length < 3) {
@@ -145,7 +148,7 @@ export default function Podium({ leaders }: PodiumProps) {
 
       {/* Podium Label */}
       <div className="text-center text-foreground-muted text-xs uppercase tracking-wider">
-        Today's Champions
+        {t('todaysChampions')}
       </div>
     </div>
   );

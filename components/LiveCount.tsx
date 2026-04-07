@@ -3,12 +3,14 @@
 import { motion } from "framer-motion";
 import { Activity } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface LiveCountProps {
   count: number;
 }
 
 export default function LiveCount({ count }: LiveCountProps) {
+  const { t } = useLanguage();
   const [displayCount, setDisplayCount] = useState(0);
 
   // Animate count changes
@@ -63,7 +65,7 @@ export default function LiveCount({ count }: LiveCountProps) {
             {displayCount}
           </span>
           <span className="text-foreground-muted text-xs">
-            climbing now
+            {t('climbingNow')}
           </span>
         </div>
       </div>

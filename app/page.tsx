@@ -7,9 +7,12 @@ import { Mountain, Zap, ChevronRight, LogOut, User, Send } from "lucide-react";
 import Podium from "@/components/Podium";
 import LiveCount from "@/components/LiveCount";
 import { supabase } from "@/lib/supabase";
+import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function Home() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [user, setUser] = useState<any>(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [leaders, setLeaders] = useState<any[]>([]);
@@ -212,6 +215,9 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      {/* Language Switcher */}
+      <LanguageSwitcher />
+
       {/* Live Count Indicator */}
       <LiveCount count={liveCount} />
 
@@ -252,7 +258,7 @@ export default function Home() {
                   type="button"
                 >
                   <LogOut className="w-4 h-4" />
-                  Logout
+                  {t('logoutButton')}
                 </button>
               </motion.div>
             )}
@@ -266,7 +272,7 @@ export default function Home() {
             type="button"
           >
             <Send className="w-4 h-4" />
-            Login
+            {t('loginButton')}
           </button>
         </div>
       )}
@@ -288,7 +294,7 @@ export default function Home() {
             </h1>
           </div>
           <p className="text-foreground-muted text-sm">
-            Health Stairs · Almaty
+            {t('tagline')}
           </p>
         </motion.div>
 
@@ -301,13 +307,13 @@ export default function Home() {
         >
           {isLoading ? (
             <div className="text-center text-foreground-muted py-12">
-              <p className="text-sm">Loading leaderboard...</p>
+              <p className="text-sm">{t('loadingLeaderboard')}</p>
             </div>
           ) : leaders.length > 0 ? (
             <Podium leaders={leaders} />
           ) : (
             <div className="text-center text-foreground-muted py-12">
-              <p className="text-sm">No climbs yet today. Be the first!</p>
+              <p className="text-sm">{t('noClimbsYet')}</p>
             </div>
           )}
         </motion.div>
@@ -328,7 +334,7 @@ export default function Home() {
                        flex items-center justify-center gap-3"
           >
             <Zap className="w-7 h-7" />
-            START SYNAQ
+            {t('startButton')}
             <ChevronRight className="w-7 h-7" />
           </motion.button>
 
@@ -341,15 +347,15 @@ export default function Home() {
           >
             <div className="bg-surface rounded-lg p-3">
               <div className="text-lime font-bold text-xl font-mono">{stats.today}</div>
-              <div className="text-foreground-muted text-xs">Today</div>
+              <div className="text-foreground-muted text-xs">{t('todayStats')}</div>
             </div>
             <div className="bg-surface rounded-lg p-3">
               <div className="text-accent font-bold text-xl font-mono">{stats.week}</div>
-              <div className="text-foreground-muted text-xs">This Week</div>
+              <div className="text-foreground-muted text-xs">{t('weekStats')}</div>
             </div>
             <div className="bg-surface rounded-lg p-3">
               <div className="text-success font-bold text-xl font-mono">{stats.allTime}</div>
-              <div className="text-foreground-muted text-xs">All Time</div>
+              <div className="text-foreground-muted text-xs">{t('allTimeStats')}</div>
             </div>
           </motion.div>
 
@@ -360,7 +366,7 @@ export default function Home() {
             transition={{ delay: 0.8 }}
             className="text-center text-foreground-muted text-sm px-4"
           >
-            Scan QR codes at start and finish to log your climb
+            {t('scanQrInfo')}
           </motion.p>
         </div>
       </main>
@@ -374,7 +380,7 @@ export default function Home() {
       >
         <div className="flex items-center justify-center gap-2 mb-2">
           <div className="h-px bg-foreground-muted/20 flex-1 max-w-[80px]" />
-          <span>Powered by mountain energy</span>
+          <span>{t('poweredBy')}</span>
           <div className="h-px bg-foreground-muted/20 flex-1 max-w-[80px]" />
         </div>
       </motion.footer>
